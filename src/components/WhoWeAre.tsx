@@ -26,25 +26,40 @@ const WhoWeAre = () => {
             </div>
           </div>
           <div className="relative">
-            <div className="bg-gradient-to-br from-pink-400 to-blue-400 rounded-3xl p-8 card-glow">
-              <div className="bg-white/90 dark:bg-gray-800/90 rounded-2xl p-8 backdrop-blur-md">
-                <h3 className="text-2xl font-bold mb-6 text-gradient">Our Values</h3>
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-3 h-3 bg-gradient-to-r from-pink-500 to-blue-500 rounded-full"></div>
-                    <span className="text-gray-800 dark:text-white font-medium">Compassionate Action</span>
+            <div className="bg-gradient-to-br from-pink-400 via-purple-400 to-blue-400 rounded-3xl p-1 card-glow">
+              <div className="bg-white/95 dark:bg-gray-800/95 rounded-3xl p-8 backdrop-blur-md">
+                <h3 className="text-3xl font-bold mb-8 text-center text-gradient">Our Values</h3>
+                <div className="grid grid-cols-2 gap-6">
+                  <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-pink-50 to-purple-50 dark:from-pink-900/20 dark:to-purple-900/20 hover:scale-105 transition-transform duration-300">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-pink-500 to-purple-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-2xl">💜</span>
+                    </div>
+                    <h4 className="text-lg font-bold mb-2 text-gray-800 dark:text-white">Compassionate Action</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">Leading with empathy in everything we do</p>
                   </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-3 h-3 bg-gradient-to-r from-pink-500 to-blue-500 rounded-full"></div>
-                    <span className="text-gray-800 dark:text-white font-medium">Youth Empowerment</span>
+                  
+                  <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 hover:scale-105 transition-transform duration-300">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-2xl">⚡</span>
+                    </div>
+                    <h4 className="text-lg font-bold mb-2 text-gray-800 dark:text-white">Youth Empowerment</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">Unleashing the power of young voices</p>
                   </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-3 h-3 bg-gradient-to-r from-pink-500 to-blue-500 rounded-full"></div>
-                    <span className="text-gray-800 dark:text-white font-medium">Inclusive Community</span>
+                  
+                  <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 hover:scale-105 transition-transform duration-300">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-2xl">🤝</span>
+                    </div>
+                    <h4 className="text-lg font-bold mb-2 text-gray-800 dark:text-white">Inclusive Community</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">Building bridges across all differences</p>
                   </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-3 h-3 bg-gradient-to-r from-pink-500 to-blue-500 rounded-full"></div>
-                    <span className="text-gray-800 dark:text-white font-medium">Sustainable Impact</span>
+                  
+                  <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-cyan-50 to-pink-50 dark:from-cyan-900/20 dark:to-pink-900/20 hover:scale-105 transition-transform duration-300">
+                    <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-r from-cyan-500 to-pink-500 rounded-full flex items-center justify-center">
+                      <span className="text-white text-2xl">🌱</span>
+                    </div>
+                    <h4 className="text-lg font-bold mb-2 text-gray-800 dark:text-white">Sustainable Impact</h4>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">Creating lasting positive change</p>
                   </div>
                 </div>
               </div>

@@ -120,22 +120,6 @@ const About = () => {
               </div>
             </div>
           </div>
-
-          {/* Call to Action */}
-          <div className="text-center mt-16">
-            <div className="bg-gradient-to-r from-pink-500 to-blue-500 rounded-3xl p-12 text-white glow">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                Join Our Community
-              </h2>
-              <p className="text-xl mb-8 opacity-90">
-                Whether you're a teenager looking to make a difference or an organization that could use some extra love, 
-                there's a place for you in Bravespace.
-              </p>
-              <button className="bg-white text-gray-800 px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105">
-                Connect with Us
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </Layout>

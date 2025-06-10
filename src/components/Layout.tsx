@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Mail, Instagram, MapPin, Phone, Clock, Heart } from 'lucide-react';
+import { Mail, Instagram, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface LayoutProps {
@@ -55,7 +55,7 @@ const Layout = ({ children, showFooterCTA = true }: LayoutProps) => {
               
               <div className="flex items-center space-x-3 ml-6">
                 <a 
-                  href="mailto:hello@bravespace.org" 
+                  href="mailto:thebravespace24@gmail.com" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="p-2 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 text-white hover:shadow-lg transition-all duration-300 hover:scale-110"
@@ -63,7 +63,7 @@ const Layout = ({ children, showFooterCTA = true }: LayoutProps) => {
                   <Mail size={16} />
                 </a>
                 <a 
-                  href="https://instagram.com/bravespace" 
+                  href="https://www.instagram.com/thebravespace._/" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="p-2 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 text-white hover:shadow-lg transition-all duration-300 hover:scale-110"
@@ -101,9 +101,12 @@ const Layout = ({ children, showFooterCTA = true }: LayoutProps) => {
               <p className="text-xl mb-8 opacity-90">
                 Every small action creates ripples of positive change. Join us in building a more compassionate world.
               </p>
-              <button className="bg-white text-gray-800 px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg">
+              <a 
+                href="mailto:thebravespace24@gmail.com"
+                className="inline-block bg-white text-gray-800 px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg"
+              >
                 Get Involved
-              </button>
+              </a>
             </div>
           </div>
         </section>
@@ -112,25 +115,27 @@ const Layout = ({ children, showFooterCTA = true }: LayoutProps) => {
       {/* Enhanced Footer */}
       <footer className="bg-gradient-to-br from-gray-800 via-gray-900 to-black text-white">
         <div className="max-w-7xl mx-auto px-6 py-16">
-          <div className="grid md:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-3 gap-8">
             {/* Brand Section */}
             <div className="md:col-span-1">
               <h3 className="text-2xl font-bold text-gradient mb-4">BRAVESPACE</h3>
               <p className="text-gray-300 mb-6 leading-relaxed">
-                Creating ripples of positive change through compassionate youth action.
+                Creating ripples of positive change through compassionate youth action. We believe in the power of small acts to transform communities.
               </p>
               <div className="flex space-x-4">
                 <a 
-                  href="mailto:hello@bravespace.org" 
-                  className="p-2 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 hover:shadow-lg transition-all duration-300 hover:scale-110"
+                  href="mailto:thebravespace24@gmail.com" 
+                  className="p-3 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 hover:shadow-lg transition-all duration-300 hover:scale-110"
                 >
-                  <Mail size={18} />
+                  <Mail size={20} />
                 </a>
                 <a 
-                  href="https://instagram.com/bravespace" 
-                  className="p-2 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 hover:shadow-lg transition-all duration-300 hover:scale-110"
+                  href="https://www.instagram.com/thebravespace._/" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 rounded-full bg-gradient-to-r from-pink-500 to-blue-500 hover:shadow-lg transition-all duration-300 hover:scale-110"
                 >
-                  <Instagram size={18} />
+                  <Instagram size={20} />
                 </a>
               </div>
             </div>
@@ -138,73 +143,46 @@ const Layout = ({ children, showFooterCTA = true }: LayoutProps) => {
             {/* Quick Links */}
             <div>
               <h4 className="text-lg font-semibold mb-4 text-gradient">Quick Links</h4>
-              <ul className="space-y-2">
+              <ul className="space-y-3">
                 <li><Link to="/" className="text-gray-300 hover:text-white transition-colors">Home</Link></li>
                 <li><Link to="/about" className="text-gray-300 hover:text-white transition-colors">About Us</Link></li>
                 <li><Link to="/blogs" className="text-gray-300 hover:text-white transition-colors">Our Stories</Link></li>
-                <li><a href="#programs" className="text-gray-300 hover:text-white transition-colors">Programs</a></li>
-                <li><a href="#volunteer" className="text-gray-300 hover:text-white transition-colors">Volunteer</a></li>
-              </ul>
-            </div>
-
-            {/* Programs */}
-            <div>
-              <h4 className="text-lg font-semibold mb-4 text-gradient">Our Programs</h4>
-              <ul className="space-y-2">
-                <li className="text-gray-300">Orphanage Visits</li>
-                <li className="text-gray-300">Elder Care</li>
-                <li className="text-gray-300">Special Education Support</li>
-                <li className="text-gray-300">Community Outreach</li>
-                <li className="text-gray-300">Youth Mentorship</li>
+                <li><a href="mailto:thebravespace24@gmail.com" className="text-gray-300 hover:text-white transition-colors">Contact Us</a></li>
               </ul>
             </div>
 
             {/* Contact Info */}
             <div>
               <h4 className="text-lg font-semibold mb-4 text-gradient">Get In Touch</h4>
-              <div className="space-y-3">
-                <div className="flex items-center space-x-3">
-                  <MapPin size={16} className="text-pink-400" />
-                  <span className="text-gray-300">Mumbai, Maharashtra, India</span>
-                </div>
+              <div className="space-y-4">
                 <div className="flex items-center space-x-3">
                   <Mail size={16} className="text-pink-400" />
-                  <span className="text-gray-300">hello@bravespace.org</span>
+                  <a href="mailto:thebravespace24@gmail.com" className="text-gray-300 hover:text-white transition-colors">
+                    thebravespace24@gmail.com
+                  </a>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <Phone size={16} className="text-pink-400" />
-                  <span className="text-gray-300">+91 98765 43210</span>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Clock size={16} className="text-pink-400" />
-                  <span className="text-gray-300">Mon-Sat: 9AM-6PM</span>
+                  <Instagram size={16} className="text-pink-400" />
+                  <a 
+                    href="https://www.instagram.com/thebravespace._/" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-gray-300 hover:text-white transition-colors"
+                  >
+                    @thebravespace._
+                  </a>
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Newsletter Signup */}
-          <div className="border-t border-gray-700 mt-12 pt-8">
-            <div className="text-center">
-              <h4 className="text-xl font-semibold mb-4 text-gradient">Stay Connected</h4>
-              <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
-                Subscribe to our newsletter for updates on our latest initiatives and stories of impact.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                <input 
-                  type="email" 
-                  placeholder="Your email address"
-                  className="flex-1 px-4 py-3 rounded-xl text-gray-800 bg-white"
-                />
-                <button className="bg-gradient-to-r from-pink-500 to-blue-500 px-6 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105">
-                  Subscribe
-                </button>
+              <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-pink-500/20 to-blue-500/20 border border-pink-500/30">
+                <p className="text-sm text-gray-300">
+                  Have questions or want to get involved? We'd love to hear from you! Reach out through email or Instagram.
+                </p>
               </div>
             </div>
           </div>
 
           {/* Bottom Bar */}
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center">
+          <div className="border-t border-gray-700 mt-12 pt-8 text-center">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <p className="text-gray-400 mb-4 md:mb-0">
                 © 2024 Bravespace. All rights reserved.

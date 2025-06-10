@@ -95,9 +95,15 @@ const Blogs = () => {
                 <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">
                   No Stories Yet
                 </h2>
-                <p className="text-gray-600 dark:text-gray-300">
+                <p className="text-gray-600 dark:text-gray-300 mb-6">
                   We're working on sharing our amazing stories with you. Check back soon!
                 </p>
+                <a 
+                  href="mailto:thebravespace24@gmail.com"
+                  className="inline-block bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-2xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105"
+                >
+                  Contact Us
+                </a>
               </div>
             </div>
           ) : (
@@ -183,26 +189,22 @@ const Blogs = () => {
             </>
           )}
 
-          {/* Newsletter Signup */}
+          {/* Contact CTA */}
           <div className="mt-20 text-center">
             <div className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 rounded-3xl p-12 text-white glow pulse-glow">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                Stay Connected
+                Want to Share Your Story?
               </h2>
               <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                Get the latest stories from Bravespace delivered to your inbox. 
-                Be part of our journey and never miss a moment of impact.
+                Have an idea for a blog post or want to contribute to our journey? 
+                We'd love to hear from you and share your experiences with our community.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                <input 
-                  type="email" 
-                  placeholder="Your email address"
-                  className="flex-1 px-6 py-4 rounded-2xl text-gray-800 font-medium"
-                />
-                <button className="bg-white text-gray-800 px-8 py-4 rounded-2xl font-semibold hover:bg-gray-100 transition-all duration-300 hover:scale-105">
-                  Subscribe
-                </button>
-              </div>
+              <a 
+                href="mailto:thebravespace24@gmail.com?subject=Blog Contribution"
+                className="inline-block bg-white text-gray-800 px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg"
+              >
+                Get in Touch
+              </a>
             </div>
           </div>
         </div>
