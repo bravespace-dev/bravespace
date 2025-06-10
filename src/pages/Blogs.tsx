@@ -1,45 +1,78 @@
 
 import Layout from '@/components/Layout';
 import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+
+interface Blog {
+  id: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  author: string;
+  created_at: string;
+  featured_image_url?: string;
+}
 
 const Blogs = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
     return () => clearTimeout(timer);
   }, []);
 
-  // Mock blog data - this will be replaced with Supabase data later
-  const mockBlogs = [
-    {
-      id: 1,
-      title: "Our First Visit to Sunshine Orphanage",
-      excerpt: "Last weekend, our team visited Sunshine Orphanage and what we experienced there changed us forever. The smiles, the laughter, and the pure joy of the children reminded us why we started Bravespace.",
-      image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600&h=400&fit=crop",
-      date: "2024-01-15",
-      author: "Maya Patel",
-      readTime: "5 min read"
-    },
-    {
-      id: 2,
-      title: "Teaching Technology to Our Elders",
-      excerpt: "At Grandparents' Haven, we spent an afternoon teaching basic smartphone skills. The eagerness to learn and connect with their grandchildren through video calls was absolutely heartwarming.",
-      image: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=600&h=400&fit=crop",
-      date: "2024-01-10",
-      author: "Alex Chen",
-      readTime: "4 min read"
-    },
-    {
-      id: 3,
-      title: "Celebrating Unique Abilities at Rainbow Special School",
-      excerpt: "Every child at Rainbow Special School has something incredible to offer. This week, we organized an art exhibition showcasing their amazing talents, and the results blew us away.",
-      image: "https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=600&h=400&fit=crop",
-      date: "2024-01-05",
-      author: "Jordan Kim",
-      readTime: "6 min read"
-    }
-  ];
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('blogs')
+          .select('*')
+          .eq('published', true)
+          .order('created_at', { ascending: false });
+
+        if (error) {
+          throw error;
+        }
+
+        setBlogs(data || []);
+      } catch (error) {
+        console.error('Error fetching blogs:', error);
+        toast({
+          title: "Error",
+          description: "Failed to load blogs. Please try again later.",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchBlogs();
+  }, [toast]);
+
+  const calculateReadTime = (content: string) => {
+    const wordsPerMinute = 200;
+    const words = content.replace(/<[^>]*>/g, '').split(/\s+/).length;
+    const minutes = Math.ceil(words / wordsPerMinute);
+    return `${minutes} min read`;
+  };
+
+  if (isLoading) {
+    return (
+      <Layout>
+        <div className="min-h-screen py-20 px-6 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-lg text-gray-600 dark:text-gray-300">Loading our stories...</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>
@@ -56,76 +89,103 @@ const Blogs = () => {
             </p>
           </div>
 
-          {/* Featured Blog */}
-          {mockBlogs.length > 0 && (
-            <div className="mb-16 fade-in-up">
-              <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-3xl overflow-hidden card-glow">
-                <div className="md:flex">
-                  <div className="md:w-1/2">
-                    <img 
-                      src={mockBlogs[0].image} 
-                      alt={mockBlogs[0].title}
-                      className="w-full h-64 md:h-full object-cover"
-                    />
-                  </div>
-                  <div className="md:w-1/2 p-8 md:p-12">
-                    <div className="text-sm text-primary font-semibold mb-2">FEATURED STORY</div>
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800 dark:text-white">
-                      {mockBlogs[0].title}
-                    </h2>
-                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
-                      {mockBlogs[0].excerpt}
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <div className="text-sm text-gray-500 dark:text-gray-400">
-                        By {mockBlogs[0].author} • {mockBlogs[0].readTime}
-                      </div>
-                      <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-2xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105">
-                        Read More
-                      </button>
-                    </div>
-                  </div>
-                </div>
+          {blogs.length === 0 ? (
+            <div className="text-center py-16">
+              <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-3xl p-12 card-glow">
+                <h2 className="text-2xl font-bold mb-4 text-gray-800 dark:text-white">
+                  No Stories Yet
+                </h2>
+                <p className="text-gray-600 dark:text-gray-300">
+                  We're working on sharing our amazing stories with you. Check back soon!
+                </p>
               </div>
             </div>
-          )}
-
-          {/* Blog Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {mockBlogs.slice(1).map((blog, index) => (
-              <div 
-                key={blog.id}
-                className={`bg-white/70 dark:bg-gray-800/70 backdrop-blur-md rounded-3xl overflow-hidden card-glow hover:scale-105 transition-all duration-500 fade-in-up`}
-                style={{ animationDelay: `${index * 200}ms` }}
-              >
-                <img 
-                  src={blog.image} 
-                  alt={blog.title}
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-6">
-                  <h3 className="text-xl font-bold mb-3 text-gray-800 dark:text-white">
-                    {blog.title}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4">
-                    {blog.excerpt.slice(0, 120)}...
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <div className="text-xs text-gray-500 dark:text-gray-400">
-                      {blog.author} • {blog.readTime}
+          ) : (
+            <>
+              {/* Featured Blog */}
+              {blogs.length > 0 && (
+                <div className="mb-16 fade-in-up">
+                  <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-3xl overflow-hidden card-glow">
+                    <div className="md:flex">
+                      <div className="md:w-1/2">
+                        {blogs[0].featured_image_url ? (
+                          <img 
+                            src={blogs[0].featured_image_url} 
+                            alt={blogs[0].title}
+                            className="w-full h-64 md:h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-64 md:h-full bg-gradient-to-br from-pink-400 to-blue-400 flex items-center justify-center">
+                            <span className="text-white text-6xl">📖</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="md:w-1/2 p-8 md:p-12">
+                        <div className="text-sm text-primary font-semibold mb-2">FEATURED STORY</div>
+                        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800 dark:text-white">
+                          {blogs[0].title}
+                        </h2>
+                        <p className="text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+                          {blogs[0].excerpt}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <div className="text-sm text-gray-500 dark:text-gray-400">
+                            By {blogs[0].author} • {calculateReadTime(blogs[0].content)}
+                          </div>
+                          <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-2xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105">
+                            Read More
+                          </button>
+                        </div>
+                      </div>
                     </div>
-                    <button className="text-primary font-semibold text-sm hover:underline">
-                      Read More
-                    </button>
                   </div>
                 </div>
+              )}
+
+              {/* Blog Grid */}
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {blogs.slice(1).map((blog, index) => (
+                  <div 
+                    key={blog.id}
+                    className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-3xl overflow-hidden card-glow hover:scale-105 transition-all duration-500 fade-in-up`}
+                    style={{ animationDelay: `${index * 200}ms` }}
+                  >
+                    {blog.featured_image_url ? (
+                      <img 
+                        src={blog.featured_image_url} 
+                        alt={blog.title}
+                        className="w-full h-48 object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-48 bg-gradient-to-br from-pink-400 to-blue-400 flex items-center justify-center">
+                        <span className="text-white text-4xl">📖</span>
+                      </div>
+                    )}
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold mb-3 text-gray-800 dark:text-white">
+                        {blog.title}
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed mb-4">
+                        {blog.excerpt}
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <div className="text-xs text-gray-500 dark:text-gray-400">
+                          {blog.author} • {calculateReadTime(blog.content)}
+                        </div>
+                        <button className="text-primary font-semibold text-sm hover:underline">
+                          Read More
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            </>
+          )}
 
           {/* Newsletter Signup */}
           <div className="mt-20 text-center">
-            <div className="bg-gradient-to-r from-pink-500 to-blue-500 rounded-3xl p-12 text-white glow">
+            <div className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 rounded-3xl p-12 text-white glow pulse-glow">
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
                 Stay Connected
               </h2>

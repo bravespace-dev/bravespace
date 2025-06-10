@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react';
 import Layout from '@/components/Layout';
 import BravespaceWordArt from '@/components/BravespaceWordArt';
 import FounderCard from '@/components/FounderCard';
+import ImageCollage from '@/components/ImageCollage';
+import WhoWeAre from '@/components/WhoWeAre';
+import WhatWeDo from '@/components/WhatWeDo';
 
 const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -31,7 +34,7 @@ const Home = () => {
   ];
 
   return (
-    <Layout>
+    <Layout showFooterCTA={false}>
       <div className="min-h-screen">
         {/* Hero Section */}
         <section className="relative py-20 px-6 text-center overflow-hidden">
@@ -51,36 +54,16 @@ const Home = () => {
           </div>
         </section>
 
-        {/* What We Do Section */}
-        <section className="py-20 px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="bg-white/60 dark:bg-gray-800/60 backdrop-blur-md rounded-3xl p-12 card-glow">
-              <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 text-gradient">
-                What We Do
-              </h2>
-              
-              <div className="grid md:grid-cols-3 gap-8">
-                <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-pink-100 to-purple-100 dark:from-pink-900/30 dark:to-purple-900/30">
-                  <div className="text-4xl mb-4">🏠</div>
-                  <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-white">Orphanages</h3>
-                  <p className="text-gray-600 dark:text-gray-300">Bringing joy, mentorship, and educational support to children who need it most.</p>
-                </div>
-                
-                <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-900/30 dark:to-cyan-900/30">
-                  <div className="text-4xl mb-4">👵</div>
-                  <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-white">Old Age Homes</h3>
-                  <p className="text-gray-600 dark:text-gray-300">Sharing stories, technology lessons, and companionship with our elders.</p>
-                </div>
-                
-                <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30">
-                  <div className="text-4xl mb-4">🎓</div>
-                  <h3 className="text-xl font-semibold mb-3 text-gray-800 dark:text-white">Special Schools</h3>
-                  <p className="text-gray-600 dark:text-gray-300">Creating inclusive activities and celebrating the unique abilities of every student.</p>
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* Image Collage Section */}
+        <section className="py-12 px-6 overflow-hidden">
+          <ImageCollage />
         </section>
+
+        {/* Who We Are Section */}
+        <WhoWeAre />
+
+        {/* What We Do Section */}
+        <WhatWeDo />
 
         {/* Founders Section */}
         <section className="py-20 px-6">
@@ -99,23 +82,6 @@ const Home = () => {
                   delay={index * 200}
                 />
               ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Call to Action */}
-        <section className="py-20 px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="bg-gradient-to-r from-pink-500 to-blue-500 rounded-3xl p-12 text-white glow">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                Ready to Make a Difference?
-              </h2>
-              <p className="text-xl mb-8 opacity-90">
-                Every small action creates ripples of positive change. Join us in building a more compassionate world.
-              </p>
-              <button className="bg-white text-gray-800 px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105">
-                Get Involved
-              </button>
             </div>
           </div>
         </section>

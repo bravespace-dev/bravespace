@@ -80,7 +80,8 @@
   }
 
   body {
-    @apply bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50 dark:from-gray-900 dark:via-purple-900 dark:to-blue-900 text-foreground min-h-screen;
+    @apply bg-gradient-to-br from-pink-100 via-purple-200 to-blue-300 dark:from-gray-900 dark:via-purple-900 dark:to-blue-900 text-foreground min-h-screen;
+    background-attachment: fixed;
   }
 }
 
@@ -90,11 +91,11 @@
   }
   
   .glow {
-    box-shadow: 0 0 20px rgba(255, 20, 147, 0.3), 0 0 40px rgba(30, 144, 255, 0.2);
+    box-shadow: 0 0 30px rgba(255, 20, 147, 0.4), 0 0 60px rgba(30, 144, 255, 0.3);
   }
   
   .card-glow {
-    box-shadow: 0 8px 32px rgba(255, 20, 147, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(255, 20, 147, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1);
   }
   
   .text-gradient {
@@ -124,10 +125,19 @@
 
 @keyframes pulse-glow {
   0%, 100% { 
-    box-shadow: 0 0 20px rgba(255, 20, 147, 0.3), 0 0 40px rgba(30, 144, 255, 0.2);
+    box-shadow: 0 0 30px rgba(255, 20, 147, 0.4), 0 0 60px rgba(30, 144, 255, 0.3);
   }
   50% { 
-    box-shadow: 0 0 30px rgba(255, 20, 147, 0.5), 0 0 60px rgba(30, 144, 255, 0.4);
+    box-shadow: 0 0 50px rgba(255, 20, 147, 0.6), 0 0 100px rgba(30, 144, 255, 0.5);
+  }
+}
+
+@keyframes scroll-right {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
   }
 }
 
@@ -141,4 +151,26 @@
 
 .pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-scroll-right {
+  animation: scroll-right 30s linear infinite;
+}
+
+/* React Quill Custom Styles */
+.ql-editor {
+  min-height: 300px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.ql-toolbar {
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.ql-container {
+  border-bottom-left-radius: 0.75rem;
+  border-bottom-right-radius: 0.75rem;
 }
