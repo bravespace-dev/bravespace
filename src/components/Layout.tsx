@@ -10,15 +10,21 @@ interface LayoutProps {
 }
 
 const Layout = ({ children, showFooterCTA = true }: LayoutProps) => {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    // Initialize from localStorage
+    const saved = localStorage.getItem('darkMode');
+    return saved ? JSON.parse(saved) : false;
+  });
   const location = useLocation();
 
   useEffect(() => {
+    // Apply dark mode and save to localStorage
     if (darkMode) {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
     }
+    localStorage.setItem('darkMode', JSON.stringify(darkMode));
   }, [darkMode]);
 
   const isActive = (path: string) => location.pathname === path;

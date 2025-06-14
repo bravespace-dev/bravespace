@@ -1,5 +1,6 @@
 
 import Layout from '@/components/Layout';
+import BlogPost from '@/components/BlogPost';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -18,6 +19,7 @@ const Blogs = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedBlog, setSelectedBlog] = useState<Blog | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -60,6 +62,22 @@ const Blogs = () => {
     const minutes = Math.ceil(words / wordsPerMinute);
     return `${minutes} min read`;
   };
+
+  const handleReadMore = (blog: Blog) => {
+    setSelectedBlog(blog);
+  };
+
+  const handleBackToBlogs = () => {
+    setSelectedBlog(null);
+  };
+
+  if (selectedBlog) {
+    return (
+      <Layout showFooterCTA={false}>
+        <BlogPost blog={selectedBlog} onBack={handleBackToBlogs} />
+      </Layout>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -138,7 +156,10 @@ const Blogs = () => {
                           <div className="text-sm text-gray-500 dark:text-gray-400">
                             By {blogs[0].author} • {calculateReadTime(blogs[0].content)}
                           </div>
-                          <button className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-2xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105">
+                          <button 
+                            onClick={() => handleReadMore(blogs[0])}
+                            className="bg-gradient-to-r from-pink-500 to-blue-500 text-white px-6 py-3 rounded-2xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-105"
+                          >
                             Read More
                           </button>
                         </div>
@@ -178,7 +199,10 @@ const Blogs = () => {
                         <div className="text-xs text-gray-500 dark:text-gray-400">
                           {blog.author} • {calculateReadTime(blog.content)}
                         </div>
-                        <button className="text-primary font-semibold text-sm hover:underline">
+                        <button 
+                          onClick={() => handleReadMore(blog)}
+                          className="text-primary font-semibold text-sm hover:underline"
+                        >
                           Read More
                         </button>
                       </div>
@@ -188,25 +212,6 @@ const Blogs = () => {
               </div>
             </>
           )}
-
-          {/* Contact CTA */}
-          <div className="mt-20 text-center">
-            <div className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 rounded-3xl p-12 text-white glow pulse-glow">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                Want to Share Your Story?
-              </h2>
-              <p className="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-                Have an idea for a blog post or want to contribute to our journey? 
-                We'd love to hear from you and share your experiences with our community.
-              </p>
-              <a 
-                href="mailto:thebravespace24@gmail.com?subject=Blog Contribution"
-                className="inline-block bg-white text-gray-800 px-8 py-4 rounded-2xl font-semibold text-lg hover:bg-gray-100 transition-all duration-300 hover:scale-105 shadow-lg"
-              >
-                Get in Touch
-              </a>
-            </div>
-          </div>
         </div>
       </div>
     </Layout>
