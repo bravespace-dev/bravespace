@@ -1,9 +1,9 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import BlogEditor from '@/components/BlogEditor';
 import BlogManager from '@/components/BlogManager';
 import GalleryManager from '@/components/GalleryManager';
+import TagManager from '@/components/TagManager';
 
 const Administrator = () => {
   return (
@@ -18,9 +18,10 @@ const Administrator = () => {
 
         {/* Admin Tabs */}
         <Tabs defaultValue="blogs" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-2xl">
+          <TabsList className="grid w-full grid-cols-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-2xl">
             <TabsTrigger value="blogs" className="rounded-xl">Manage Blogs</TabsTrigger>
             <TabsTrigger value="editor" className="rounded-xl">Write Blog</TabsTrigger>
+            <TabsTrigger value="tags" className="rounded-xl">Manage Tags</TabsTrigger>
             <TabsTrigger value="gallery" className="rounded-xl">Gallery</TabsTrigger>
           </TabsList>
 
@@ -32,6 +33,11 @@ const Administrator = () => {
           {/* Blog Editor */}
           <TabsContent value="editor">
             <BlogEditor />
+          </TabsContent>
+
+          {/* Tag Management */}
+          <TabsContent value="tags">
+            <TagManager />
           </TabsContent>
 
           {/* Gallery Management */}
