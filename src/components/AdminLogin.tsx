@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
 
 interface AdminLoginProps {
   onLogin: () => void;
@@ -20,39 +19,26 @@ const AdminLogin = ({ onLogin }: AdminLoginProps) => {
     e.preventDefault();
     setIsLoading(true);
 
-    try {
-      const { data, error } = await supabase.functions.invoke('admin-auth', {
-        body: { username, password }
+    // Environment variables for credentials
+    const adminUsername = import.meta.env.VITE_ADMIN_USERNAME || 'admin';
+    const adminPassword = import.meta.env.VITE_ADMIN_PASSWORD || 'brave@24';
+
+    // Simple comparison (frontend only)
+    if (username === adminUsername && password === adminPassword) {
+      onLogin();
+      toast({
+        title: "Success",
+        description: "Logged in successfully!",
       });
-
-      if (error) {
-        throw error;
-      }
-
-      if (data.success) {
-        localStorage.setItem('admin_token', data.token);
-        onLogin();
-        toast({
-          title: "Success",
-          description: "Logged in successfully!",
-        });
-      } else {
-        toast({
-          title: "Error",
-          description: "Invalid credentials",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      console.error('Login error:', error);
+    } else {
       toast({
         title: "Error",
-        description: "Failed to login. Please try again.",
+        description: "Invalid credentials",
         variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
     }
+
+    setIsLoading(false);
   };
 
   return (
