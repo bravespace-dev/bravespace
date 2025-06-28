@@ -6,32 +6,39 @@ import FounderCard from '@/components/FounderCard';
 import ImageCollage from '@/components/ImageCollage';
 import WhoWeAre from '@/components/WhoWeAre';
 import WhatWeDo from '@/components/WhatWeDo';
+import { supabase } from '@/integrations/supabase/client';
+
+interface Founder {
+  id: string;
+  name: string;
+  description: string;
+  image_url: string;
+  sort_order: number;
+}
 
 const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [founders, setFounders] = useState<Founder[]>([]);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
+    fetchFounders();
     return () => clearTimeout(timer);
   }, []);
 
-  const founders = [
-    {
-      name: "Alex Chen",
-      description: "Passionate about creating spaces where every teen feels heard and valued.",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&crop=face"
-    },
-    {
-      name: "Maya Patel",
-      description: "Believes in the power of small acts to create ripples of positive change.",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=200&h=200&fit=crop&crop=face"
-    },
-    {
-      name: "Jordan Kim",
-      description: "Dedicated to building bridges between generations through compassionate action.",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face"
+  const fetchFounders = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('founders')
+        .select('*')
+        .order('sort_order', { ascending: true });
+
+      if (error) throw error;
+      setFounders(data || []);
+    } catch (error) {
+      console.error('Error fetching founders:', error);
     }
-  ];
+  };
 
   return (
     <Layout showFooterCTA={false}>
@@ -75,10 +82,10 @@ const Home = () => {
             <div className="grid md:grid-cols-3 gap-8">
               {founders.map((founder, index) => (
                 <FounderCard
-                  key={founder.name}
+                  key={founder.id}
                   name={founder.name}
                   description={founder.description}
-                  image={founder.image}
+                  image={founder.image_url}
                   delay={index * 200}
                 />
               ))}

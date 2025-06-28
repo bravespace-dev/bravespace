@@ -6,6 +6,7 @@ import BlogEditor from '@/components/BlogEditor';
 import BlogManager from '@/components/BlogManager';
 import GalleryManager from '@/components/GalleryManager';
 import TagManager from '@/components/TagManager';
+import FounderManager from '@/components/FounderManager';
 import AdminLogin from '@/components/AdminLogin';
 
 const Administrator = () => {
@@ -51,10 +52,11 @@ const Administrator = () => {
 
         {/* Admin Tabs */}
         <Tabs defaultValue="blogs" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-2xl">
+          <TabsList className="grid w-full grid-cols-5 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-2xl">
             <TabsTrigger value="blogs" className="rounded-xl">Manage Blogs</TabsTrigger>
             <TabsTrigger value="editor" className="rounded-xl">Write Blog</TabsTrigger>
             <TabsTrigger value="tags" className="rounded-xl">Manage Tags</TabsTrigger>
+            <TabsTrigger value="founders" className="rounded-xl">Manage Founders</TabsTrigger>
             <TabsTrigger value="gallery" className="rounded-xl">Gallery</TabsTrigger>
           </TabsList>
 
@@ -71,6 +73,11 @@ const Administrator = () => {
           {/* Tag Management */}
           <TabsContent value="tags">
             <TagManager />
+          </TabsContent>
+
+          {/* Founder Management */}
+          <TabsContent value="founders">
+            <FounderManager />
           </TabsContent>
 
           {/* Gallery Management */}

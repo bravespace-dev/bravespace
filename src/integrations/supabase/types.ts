@@ -99,6 +99,36 @@ export type Database = {
         }
         Relationships: []
       }
+      founders: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          image_url: string
+          name: string
+          sort_order: number | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          image_url: string
+          name: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          image_url?: string
+          name?: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       gallery_images: {
         Row: {
           alt_text: string | null
