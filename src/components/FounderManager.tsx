@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Pencil, Trash2, Plus } from 'lucide-react';
+import { Pencil, Trash2, Plus, Upload } from 'lucide-react';
 
 interface Founder {
   id: string;
@@ -23,6 +23,8 @@ const FounderManager = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [editingFounder, setEditingFounder] = useState<Founder | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -56,10 +58,64 @@ const FounderManager = () => {
     }
   };
 
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Check file type
+      if (!file.type.startsWith('image/')) {
+        toast({
+          title: "Error",
+          description: "Please select an image file",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      // Check file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toast({
+          title: "Error",
+          description: "File size must be less than 5MB",
+          variant: "destructive",
+        });
+        return;
+      }
+      
+      setSelectedFile(file);
+    }
+  };
+
+  const uploadImage = async (file: File): Promise<string> => {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Math.random()}.${fileExt}`;
+    const filePath = `founder-images/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from('founder-images')
+      .upload(filePath, file);
+
+    if (uploadError) throw uploadError;
+
+    const { data } = supabase.storage
+      .from('founder-images')
+      .getPublicUrl(filePath);
+
+    return data.publicUrl;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     try {
+      setIsUploading(true);
+      
+      let imageUrl = formData.image_url;
+      
+      // Upload new image if a file is selected
+      if (selectedFile) {
+        imageUrl = await uploadImage(selectedFile);
+      }
+
       if (editingFounder) {
         // Update existing founder
         const { error } = await supabase
@@ -67,7 +123,7 @@ const FounderManager = () => {
           .update({
             name: formData.name,
             description: formData.description,
-            image_url: formData.image_url,
+            image_url: imageUrl,
             sort_order: formData.sort_order,
             updated_at: new Date().toISOString()
           })
@@ -86,7 +142,7 @@ const FounderManager = () => {
           .insert([{
             name: formData.name,
             description: formData.description,
-            image_url: formData.image_url,
+            image_url: imageUrl,
             sort_order: formData.sort_order
           }]);
 
@@ -107,6 +163,8 @@ const FounderManager = () => {
         description: "Failed to save founder",
         variant: "destructive",
       });
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -118,6 +176,7 @@ const FounderManager = () => {
       image_url: founder.image_url,
       sort_order: founder.sort_order
     });
+    setSelectedFile(null);
     setIsDialogOpen(true);
   };
 
@@ -155,6 +214,7 @@ const FounderManager = () => {
       sort_order: 0
     });
     setEditingFounder(null);
+    setSelectedFile(null);
     setIsDialogOpen(false);
   };
 
@@ -209,14 +269,31 @@ const FounderManager = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-1">Image URL</label>
-                  <Input
-                    value={formData.image_url}
-                    onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                    required
-                    className="rounded-xl"
-                    placeholder="https://example.com/image.jpg"
-                  />
+                  <label className="block text-sm font-medium mb-1">Profile Image</label>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileSelect}
+                        className="rounded-xl"
+                      />
+                      <Upload className="w-4 h-4 text-gray-500" />
+                    </div>
+                    {selectedFile && (
+                      <p className="text-sm text-green-600">Selected: {selectedFile.name}</p>
+                    )}
+                    {editingFounder && !selectedFile && (
+                      <div className="flex items-center gap-2">
+                        <img 
+                          src={formData.image_url} 
+                          alt="Current"
+                          className="w-12 h-12 rounded-full object-cover"
+                        />
+                        <span className="text-sm text-gray-600">Current image (upload new to replace)</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">Sort Order</label>
@@ -231,9 +308,10 @@ const FounderManager = () => {
                 <div className="flex gap-2 pt-4">
                   <Button
                     type="submit"
+                    disabled={isUploading || (!selectedFile && !editingFounder && !formData.image_url)}
                     className="flex-1 bg-gradient-to-r from-pink-500 to-blue-500 hover:from-pink-600 hover:to-blue-600"
                   >
-                    {editingFounder ? 'Update' : 'Create'}
+                    {isUploading ? 'Uploading...' : (editingFounder ? 'Update' : 'Create')}
                   </Button>
                   <Button
                     type="button"
