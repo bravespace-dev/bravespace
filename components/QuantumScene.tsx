@@ -1,102 +1,94 @@
-/// <reference types="@react-three/fiber" />
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
 */
 
-import React, { useRef } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Float, Sparkles, Environment } from '@react-three/drei';
-import * as THREE from 'three';
+import React from 'react';
+import { motion } from 'framer-motion';
 
-const FloatingStar = ({ position, color, scale = 1 }: { position: [number, number, number]; color: string; scale?: number }) => {
-  const ref = useRef<THREE.Group>(null);
-  
-  useFrame((state) => {
-    if (ref.current) {
-      const t = state.clock.getElapsedTime();
-      // slower rotation for a more calming effect
-      ref.current.rotation.y = t * 0.2; 
-      ref.current.position.y = position[1] + Math.sin(t * 0.5 + position[0]) * 0.1;
-    }
-  });
-
-  return (
-    <group ref={ref} position={position} scale={scale}>
-      {/* 4-point star shape */}
-      <mesh>
-        <octahedronGeometry args={[0.5, 0]} />
-        <meshStandardMaterial color={color} emissive={color} emissiveIntensity={1.5} toneMapped={false} />
-      </mesh>
-    </group>
-  );
-};
+const StarIcon = ({ color, size, className }: { color: string; size: number, className?: string }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill={color} 
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    style={{ filter: `drop-shadow(0 0 8px ${color})` }}
+  >
+    <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
+  </svg>
+);
 
 export const HeroScene: React.FC<{ darkMode?: boolean }> = ({ darkMode }) => {
+  const starColor = darkMode ? "#A5B4FC" : "#2D2A4A";
+  const accentColor = "#9C27B0";
+  const goldColor = "#FFD700";
+
   return (
-    <div className="absolute inset-0 z-0 opacity-80 pointer-events-none transition-opacity duration-1000">
-      {/* Adjusted camera FOV for better mobile scaling */}
-      <Canvas camera={{ position: [0, 0, 5], fov: 75 }} dpr={[1, 2]}>
-        <ambientLight intensity={0.8} />
-        <pointLight position={[10, 10, 10]} intensity={1} color="#FFD1DC" />
-        <pointLight position={[-10, -10, -10]} intensity={0.5} color="#E0F7FA" />
-        
-        {/* Removed BackgroundOrbs as requested */}
+    <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none select-none">
+      {/* Decorative Stars matching original positions roughly */}
+      <motion.div 
+        initial={{ y: 0, rotate: 0 }}
+        animate={{ y: [-10, 10, -10], rotate: [0, 5, -5, 0] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute top-[20%] left-[20%]"
+      >
+        <StarIcon color={starColor} size={60} />
+      </motion.div>
 
-        {/* The "Trailblazer" Stars - Main decorative elements */}
-        <Float speed={1.5} rotationIntensity={0.5} floatIntensity={0.8} floatingRange={[-0.2, 0.2]}>
-           <FloatingStar position={[-1.5, 1.5, 0]} color="#2D2A4A" scale={0.3} />
-           <FloatingStar position={[2, -1, 0.5]} color="#2D2A4A" scale={0.25} />
-           <FloatingStar position={[0, 2.5, -2]} color="#9C27B0" scale={0.4} />
-        </Float>
+      <motion.div 
+        initial={{ y: 0, rotate: 0 }}
+        animate={{ y: [15, -15, 15], rotate: [0, -5, 5, 0] }}
+        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        className="absolute bottom-[20%] right-[25%]"
+      >
+        <StarIcon color={starColor} size={50} />
+      </motion.div>
 
-        {/* Layer 1: Background Dust - Very subtle, slow, covering the whole screen */}
-        <Sparkles 
-          count={150} 
-          scale={15} 
-          size={1.5} 
-          speed={0.2} 
-          opacity={0.3} 
-          color={darkMode ? "#A5B4FC" : "#2D2A4A"} 
-        />
+      <motion.div 
+        initial={{ y: 0, rotate: 0 }}
+        animate={{ y: [-20, 20, -20], rotate: [0, 10, -10, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        className="absolute top-[15%] right-[15%]"
+      >
+        <StarIcon color={accentColor} size={80} />
+      </motion.div>
 
-        {/* Layer 2: Magical Accent Particles - Slightly larger, slower moving */}
-        <Sparkles 
-          count={40} 
-          scale={10} 
-          size={3} 
-          speed={0.15} 
-          opacity={0.5} 
-          color="#9C27B0" 
-          noise={0.5}
+      {/* Background Particles/Sparkles */}
+      {Array.from({ length: 25 }).map((_, i) => (
+        <motion.div
+          key={`sparkle-${i}`}
+          className="absolute rounded-full"
+          initial={{ opacity: 0.1, scale: 0.5 }}
+          animate={{ 
+            opacity: [0.1, 0.6, 0.1], 
+            scale: [0.5, 1, 0.5],
+            y: [0, -30, 0] 
+          }}
+          transition={{
+            duration: 3 + Math.random() * 4,
+            repeat: Infinity,
+            delay: Math.random() * 5,
+            ease: "easeInOut"
+          }}
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            width: Math.random() * 3 + 1,
+            height: Math.random() * 3 + 1,
+            backgroundColor: i % 3 === 0 ? accentColor : (i % 5 === 0 ? goldColor : starColor),
+          }}
         />
-        
-        {/* Layer 3: Gold/Highlight Particles - Very sparse */}
-        <Sparkles 
-          count={15} 
-          scale={8} 
-          size={2} 
-          speed={0.1} 
-          opacity={0.4} 
-          color="#FFD700" 
-        />
-      </Canvas>
+      ))}
     </div>
   );
 };
 
 export const MagicScene: React.FC = () => {
   return (
-    <div className="w-full h-full absolute inset-0 rounded-xl overflow-hidden">
-      <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
-        <ambientLight intensity={0.5} />
-        <Environment preset="sunset" />
-        
-        <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
-            <FloatingStar position={[0, 0, 0]} color="#fff" scale={1.5} />
-            <Sparkles count={20} scale={3} size={5} speed={0.2} opacity={0.8} color="#FFD700" />
-        </Float>
-      </Canvas>
+    <div className="w-full h-full absolute inset-0 overflow-hidden bg-gradient-to-br from-indigo-900/10 to-purple-900/10 rounded-xl">
+       <HeroScene darkMode={true} />
     </div>
   );
-}
+};
